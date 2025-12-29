@@ -6,18 +6,19 @@ import stringComparison from "string-comparison";
 export default function Home() {
   const [input1, setInput1] = useState("");
   const [input2, setInput2] = useState("");
-  const [nameComparisonResult, setNameComparisonResult] = useState<number | null>(null);
+  const [nameComparisonResult, setNameComparisonResult] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: Implement your function logic here
     const nameComparisonResult = stringComparison.levenshtein.similarity(input1, input2)
-    setNameComparisonResult(nameComparisonResult as number);
+    const percentage = (nameComparisonResult * 100).toFixed(2);
+    setNameComparisonResult(percentage.toString());
 
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black" suppressHydrationWarning>
       <main className="w-full max-w-md px-6 py-12">
         <form
           onSubmit={handleSubmit}
@@ -68,9 +69,9 @@ export default function Home() {
             Submit
           </button>
         </form>
-        {nameComparisonResult && (
+        {nameComparisonResult !== null && (
           <div className="flex flex-col gap-2 mt-4">
-            <p className="text-lg font-medium text-center text-zinc-700 dark:text-zinc-300">Name Comparison Result: <strong>{nameComparisonResult}</strong></p>
+            <p className="text-lg font-medium text-center text-zinc-700 dark:text-zinc-300">Name Comparison Result: <strong>{nameComparisonResult}%</strong></p>
           </div>
         )}
       </main>
